@@ -1,13 +1,16 @@
 import json
 import os
 import requests
+import time
 
 
 def main():
     SPACE_ID = os.environ["SPACE_ID"]
-    ENVIRONMENT_ID = os.environ["SPACE_ID"]
+    ENVIRONMENT_ID = os.environ["ENVIRONMENT_ID"]
     ACCESS_TOKEN = os.environ["MGNT"]
-    BASE_URL = f"https://api.contentful.com/spaces/{SPACE_ID}/environments/{ENVIRONMENT_ID}"
+    BASE_URL = (
+        f"https://api.contentful.com/spaces/{SPACE_ID}/environments/{ENVIRONMENT_ID}"
+    )
 
     url = BASE_URL + "/content_types"
     headers = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
@@ -16,6 +19,7 @@ def main():
     content_types = json.loads(response.text)
 
     for content_type in content_types["items"]:
+        time.sleep(1)
         content_type_id = content_type["sys"]["id"]
         entries_url = BASE_URL + f"/entries?content_type={content_type_id}"
         response = requests.get(entries_url, headers=headers)
